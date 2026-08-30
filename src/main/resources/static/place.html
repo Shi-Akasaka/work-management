@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>作業一覧</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+
+<header>
+    <h1>作業一覧</h1>
+</header>
+
+<main class="place-main">
+
+    <div class="top-menu">
+        <button onclick="location.href='/'">
+            トップページ
+        </button>
+
+        <button onclick="location.href='/register.html'">
+            作業登録
+        </button>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>園地</th>
+				<th>日付</th>
+				<th>作業内容</th>
+				<th>作業者</th>
+				<th>備考</th>
+				<th>操作</th>
+	  		  </tr>
+        </thead>
+
+        <tbody id="placeTable">
+        </tbody>
+    </table>
+
+</main>
+
+<script>
+
+    // 作業一覧を取得
+    function loadPlaces() {
+
+        fetch('/place')
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error('データ取得に失敗しました');
+                }
+
+                return response.json();
+            })
+            .then(data => {
+
+                const table = document.getElementById('placeTable');
+
+                table.innerHTML = '';
+
+                data.forEach(place => {
+
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+    			<td>${place.place}</td>
+    			<td>${place.date}</td>
+    			<td>${place.name}</td>
+    			<td>${place.worker}</td>
+    			<td>${place.remarks}</td>
+    			<td>
+        			<button onclick="detail(${place.placeId})">
+			            詳細
+		        </button>
+
+        		<button class="delete"
+                		onclick="deletePlace(${place.placeId})">
+					削除
+       			</button>
+    			</td>
+		　　`;
+
+                    table.appendChild(row);
+                });
+            })
+            .catch(error => {
+
+                document.getElementById('message').textContent =
+                    error.message;
+            });
+    }
+
+
+    // 詳細画面
+    function detail(id) {
+
+        location.href = '/detail.html?id=' + id;
+    }
+
+
+    // 削除
+    function deletePlace(id) {
+
+        if (!confirm('この作業を削除しますか？')) {
+            return;
+        }
+
+        fetch('/place/' + id, {
+            method: 'DELETE'
+        })
+        .then(response => {
+
+            if (!response.ok) {
+                throw new Error('削除に失敗しました');
+            }
+
+            return response.text();
+        })
+        .then(message => {
+
+            alert(message);
+
+            loadPlaces();
+        })
+        .catch(error => {
+
+            alert(error.message);
+        });
+    }
+
+
+    // ページ読み込み時に実行
+    loadPlaces();
+
+</script>
+
+</body>
+</html>

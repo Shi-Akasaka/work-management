@@ -1,0 +1,177 @@
+package com.example.workmanagement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+
+public class PlaceController {
+
+    // 作業データを保存するリスト
+    private List<Place> placeList = new ArrayList<>();
+
+    // IDを自動で作成するための番号
+    private int nextId = 1;
+
+
+    // =========================
+    // 作業一覧取得
+    // GET /place
+    // =========================
+    @GetMapping("/place")
+    public ResponseEntity<List<Place>> getPlaceList() {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(placeList);
+    }
+
+
+    // =========================
+    // 作業詳細取得
+    // GET /place/{id}
+    // =========================
+    @GetMapping("/place/{id}")
+    public ResponseEntity<?> getPlace(
+            @PathVariable int id) {
+
+        for (Place place : placeList) {
+
+            if (place.getPlaceId() == id) {
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(place);
+            }
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("対象データがありません");
+    }
+
+
+    // =========================
+    // 作業登録
+    // POST /place
+    // =========================
+    @PostMapping("/place")
+    public ResponseEntity<?> addPlace(
+            @RequestBody Place place) {
+
+        // 入力チェック
+        if (place.getPlace() == null ||
+            place.getPlace().isEmpty() ||
+
+            place.getDate() == null ||
+            place.getDate().isEmpty() ||
+
+            place.getName() == null ||
+            place.getName().isEmpty() ||
+
+            place.getWorker() == null ||
+            place.getWorker().isEmpty()) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("入力項目が不足しています");
+        }
+
+
+        // 園地IDを自動設定
+        place.setPlaceId(nextId);
+
+        nextId++;
+
+
+        // リストに登録
+        placeList.add(place);
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(place);
+    }
+
+
+    // =========================
+    // 作業更新
+    // PUT /place/{id}
+    // =========================
+    @PutMapping("/place/{id}")
+    public ResponseEntity<?> updatePlace(
+            @PathVariable int id,
+            @RequestBody Place newPlace) {
+
+        // 入力チェック
+        if (newPlace.getPlace() == null ||
+            newPlace.getPlace().isEmpty() ||
+
+            newPlace.getDate() == null ||
+            newPlace.getDate().isEmpty() ||
+
+            newPlace.getName() == null ||
+            newPlace.getName().isEmpty() ||
+
+            newPlace.getWorker() == null ||
+            newPlace.getWorker().isEmpty()) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("入力項目が不足しています");
+        }
+
+
+        for (int i = 0; i < placeList.size(); i++) {
+
+            if (placeList.get(i).getPlaceId() == id) {
+
+                // URLのIDを使用
+                newPlace.setPlaceId(id);
+
+                // データを更新
+                placeList.set(i, newPlace);
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(newPlace);
+            }
+        }
+
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("対象データがありません");
+    }
+
+
+    // =========================
+    // 作業削除
+    // DELETE /place/{id}
+    // =========================
+    @DeleteMapping("/place/{id}")
+    public ResponseEntity<?> deletePlace(
+            @PathVariable int id) {
+
+        for (int i = 0; i < placeList.size(); i++) {
+
+            if (placeList.get(i).getPlaceId() == id) {
+
+                placeList.remove(i);
+
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body("削除しました");
+            }
+        }
+
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("対象データがありません");
+    }
+}

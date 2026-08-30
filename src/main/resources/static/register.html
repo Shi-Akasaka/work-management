@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>作業登録</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+
+</head>
+
+<body>
+
+<header>
+    <h1>作業登録</h1>
+</header>
+
+<main class="register-main">
+
+    <form id="registerForm">
+
+            <label for="place">園地</label>
+	    <input type="text" id="place" name="place" required>
+
+
+	    <label for="date">日付</label>
+	    <input type="date" id="date" name="date" required>
+
+
+	    <label for="name">作業内容</label>
+	    <input type="text" id="name" name="name" required>
+
+
+	    <label for="worker">作業者</label>
+	    <input type="text" id="worker" name="worker" required>
+
+
+	    <label for="remarks">備考</label>
+	    <textarea id="remarks" name="remarks"></textarea>
+
+        <button type="submit">
+            登録する
+        </button>
+
+        <button type="button"
+                class="cancel"
+                onclick="location.href='/place.html'">
+            戻る
+        </button>
+
+        <div class="message" id="message"></div>
+
+    </form>
+
+</main>
+
+<script>
+
+    document.getElementById('registerForm')
+        .addEventListener('submit', function(event) {
+
+            event.preventDefault();
+
+            const place = {
+
+    		place: document.getElementById('place').value,
+
+    		date: document.getElementById('date').value,
+
+    		name: document.getElementById('name').value,
+
+    		worker: document.getElementById('worker').value,
+
+    		remarks: document.getElementById('remarks').value
+	};
+
+
+            // POST /place
+            fetch('/place', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify(place)
+
+            })
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error('登録に失敗しました');
+                }
+
+                return response.json();
+            })
+            .then(data => {
+
+                alert('作業を登録しました');
+
+                location.href = '/place.html';
+            })
+            .catch(error => {
+
+                document.getElementById('message')
+                    .textContent = error.message;
+            });
+
+        });
+
+</script>
+
+</body>
+</html>

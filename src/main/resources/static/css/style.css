@@ -1,0 +1,278 @@
+/* 全体 */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+/* ヘッダー */
+header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+/* メイン */
+main {
+    width: 80%;
+    margin: 30px auto;
+}
+
+/* メニュー */
+.menu {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* カード */
+.card {
+    background-color: white;
+    width: 250px;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px #ccc;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* カード説明 */
+.card p {
+    flex-grow: 1;
+}
+
+/* カードタイトル */
+.card h2 {
+    margin-bottom: 20px;
+}
+
+/* ボタン */
+button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* ボタンにマウスを乗せたとき */
+button:hover {
+    background-color: #1b5e20;
+}
+
+/* =========================
+   作業一覧
+   ========================= */
+
+.place-main {
+    width: 90%;
+    margin: 30px auto;
+}
+
+/* 上部メニュー */
+.top-menu {
+    margin-bottom: 20px;
+}
+
+/* ボタン */
+button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #1b5e20;
+}
+
+/* 削除ボタン */
+.delete {
+    background-color: #c62828;
+}
+
+.delete:hover {
+    background-color: #8e0000;
+}
+
+/* 一覧テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+/* 見出し */
+th {
+    background-color: #2e7d32;
+    color: white;
+    padding: 12px;
+}
+
+/* データ */
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+/* メッセージ */
+.message {
+    margin: 20px 0;
+    font-weight: bold;
+}
+
+/* =========================
+   作業登録
+   ========================= */
+
+.register-main {
+    width: 600px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px #ccc;
+}
+
+.register-main label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.register-main input,
+.register-main textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.register-main textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.register-main button {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.register-main button:hover {
+    background-color: #1b5e20;
+}
+
+.register-main .cancel {
+    background-color: #777;
+}
+
+.register-main .cancel:hover {
+    background-color: #555;
+}
+
+.register-main .message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* =========================
+   作業詳細
+   ========================= */
+
+.detail-main {
+    width: 600px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px #ccc;
+}
+
+.detail-main .form-group {
+    margin-bottom: 20px;
+}
+
+.detail-main label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.detail-main input,
+.detail-main textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.detail-main textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.detail-main button {
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 5px;
+    background-color: #2e7d32;
+}
+
+.detail-main button:hover {
+    background-color: #1b5e20;
+}
+
+.detail-main .delete {
+    background-color: #c62828;
+}
+
+.detail-main .delete:hover {
+    background-color: #8e0000;
+}
+
+.detail-main .back {
+    background-color: #777;
+}
+
+.detail-main .back:hover {
+    background-color: #555;
+}
+
+.detail-main .message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+
+
+
+
