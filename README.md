@@ -253,7 +253,13 @@ work-management/
 │               ├── detail.html
 │               └── css/
 │                   └── style.css
+├── docs/
+│   └── images/
+│       ├── place-list.png
+│       ├── register.png
+│       └── detail.png
 │
+├── Dockerfile
 ├── pom.xml
 ├── README.md
 └── .gitignore
@@ -334,7 +340,7 @@ List<Place>
 GitHubからプロジェクトを取得します。
 
 ```bash
-git clone <GitHubリポジトリURL>
+git clone https://github.com/Shi-Akasaka/work-management/
 ```
 
 ## 2. プロジェクトをEclipseで読み込む
