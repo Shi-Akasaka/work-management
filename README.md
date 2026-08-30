@@ -187,12 +187,14 @@ HTTPメソッド URL 内容
 
 ---
 
+```text
 GET `/place` 作業一覧取得
 GET `/place/{id}` 作業詳細取得
 GET `/place/search?place=園地名` 同じ園地の作業取得
 POST `/place` 作業登録
 PUT `/place/{id}` 作業更新
 DELETE `/place/{id}` 作業削除
+```
 
 ---
 
