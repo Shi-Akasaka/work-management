@@ -1,20 +1,27 @@
 package com.example.workmanagement;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class PlaceController {
 
-    // 作業データを保存するリスト
-    private List<Place> placeList = new ArrayList<>();
+    private final PlaceRepository placeRepository;
 
-    // IDを自動で作成するための番号
-    private int nextId = 1;
+    // コンストラクタ
+    public PlaceController(PlaceRepository placeRepository) {
+        this.placeRepository = placeRepository;
+    }
 
 
     // =========================
@@ -23,6 +30,8 @@ public class PlaceController {
     // =========================
     @GetMapping("/place")
     public ResponseEntity<List<Place>> getPlaceList() {
+
+        List<Place> placeList = placeRepository.findAll();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -38,16 +47,7 @@ public class PlaceController {
     public ResponseEntity<List<Place>> searchPlace(
             @RequestParam String place) {
 
-        List<Place> result = new ArrayList<>();
-
-        for (Place work : placeList) {
-
-            if (work.getPlace().equals(place)) {
-
-                result.add(work);
-
-            }
-        }
+        List<Place> result = placeRepository.findByPlace(place);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -63,19 +63,13 @@ public class PlaceController {
     public ResponseEntity<?> getPlace(
             @PathVariable int id) {
 
-        for (Place place : placeList) {
-
-            if (place.getPlaceId() == id) {
-
-                return ResponseEntity
+        return placeRepository.findById(id)
+                .map(place -> ResponseEntity
                         .status(HttpStatus.OK)
-                        .body(place);
-            }
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("対象データがありません");
+                        .body(place))
+                .orElseGet(() -> ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(null));
     }
 
 
@@ -106,19 +100,13 @@ public class PlaceController {
         }
 
 
-        // IDを自動設定
-        place.setPlaceId(nextId);
-
-        nextId++;
-
-
-        // リストに登録
-        placeList.add(place);
+        // データベースに登録
+        Place savedPlace = placeRepository.save(place);
 
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(place);
+                .body(savedPlace);
     }
 
 
@@ -150,26 +138,26 @@ public class PlaceController {
         }
 
 
-        for (int i = 0; i < placeList.size(); i++) {
+        // 更新対象を検索
+        if (!placeRepository.existsById(id)) {
 
-            if (placeList.get(i).getPlaceId() == id) {
-
-                // URLのIDを使用
-                newPlace.setPlaceId(id);
-
-                // データを更新
-                placeList.set(i, newPlace);
-
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(newPlace);
-            }
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("対象データがありません");
         }
 
 
+        // URLのIDを設定
+        newPlace.setPlaceId(id);
+
+
+        // データベースを更新
+        Place updatedPlace = placeRepository.save(newPlace);
+
+
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("対象データがありません");
+                .status(HttpStatus.OK)
+                .body(updatedPlace);
     }
 
 
@@ -181,21 +169,21 @@ public class PlaceController {
     public ResponseEntity<?> deletePlace(
             @PathVariable int id) {
 
-        for (int i = 0; i < placeList.size(); i++) {
+        // 削除対象が存在するか確認
+        if (!placeRepository.existsById(id)) {
 
-            if (placeList.get(i).getPlaceId() == id) {
-
-                placeList.remove(i);
-
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body("削除しました");
-            }
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("対象データがありません");
         }
 
 
+        // データベースから削除
+        placeRepository.deleteById(id);
+
+
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body("対象データがありません");
+                .status(HttpStatus.OK)
+                .body("削除しました");
     }
 }
