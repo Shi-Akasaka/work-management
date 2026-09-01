@@ -247,6 +247,7 @@ work-management/
 │       │               ├── Application.java
 │       │               ├── Place.java
 │       │               └── PlaceController.java
+│       │               └── PlaceRepository.java
 │       │
 │       └── resources/
 │           └── static/
